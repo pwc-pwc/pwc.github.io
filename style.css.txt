@@ -1,0 +1,208 @@
+/* 全局重置+基础样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", "微软雅黑", sans-serif;
+}
+
+/* 淡粉创新背景：渐变+浮动光斑特效 */
+body {
+  background: linear-gradient(160deg, #fff9fb, #ffe6ef, #fff0f5);
+  min-height: 100vh;
+  padding: 20px;
+  position: relative;
+  overflow-x: hidden;
+  scroll-behavior: smooth; /* 平滑滚动 */
+}
+
+/* 浮动光斑（创新背景元素） */
+body::before, body::after {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: rgba(255, 192, 233, 0.3);
+  filter: blur(80px);
+  z-index: -1;
+}
+body::before {
+  top: 10%;
+  right: -100px;
+  animation: float 15s ease infinite alternate;
+}
+body::after {
+  bottom: 10%;
+  left: -100px;
+  animation: float 18s ease infinite alternate-reverse;
+}
+@keyframes float {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -30px) scale(1.1); }
+  100% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
+/* 头部：简约大气+文字发光 */
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 15px 0;
+}
+.header h1 {
+  font-size: 2.8rem;
+  color: #e83e8c;
+  text-shadow: 0 0 15px rgba(232, 62, 140, 0.2);
+  letter-spacing: 2px;
+  position: relative;
+}
+.header h1::after {
+  content: "✨";
+  position: absolute;
+  right: -40px;
+  top: -10px;
+  animation: twinkle 3s ease infinite;
+}
+@keyframes twinkle {
+  0%,100% { opacity: 0.5; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+.header p {
+  font-size: 1.1rem;
+  color: #7952b3;
+  margin-top: 8px;
+}
+
+/* 创新导航：悬浮气泡样式 */
+.nav {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+.nav a {
+  text-decoration: none;
+  color: #e83e8c;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 12px rgba(232, 62, 140, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+.nav a::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3));
+  transition: 0.5s;
+}
+.nav a:hover {
+  transform: translateY(-5px) scale(1.05);
+  background: #e83e8c;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(232, 62, 140, 0.3);
+}
+.nav a:hover::before {
+  left: 100%;
+}
+/* 导航激活状态 */
+.nav a.active {
+  background: #e83e8c;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(232, 62, 140, 0.3);
+}
+
+/* 核心内容：创新网格（非对称+卡片悬浮） */
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s ease;
+  border: 1px solid rgba(255, 192, 233, 0.3);
+  text-align: center;
+  cursor: pointer; /* 鼠标指针变为手型 */
+}
+.card:nth-child(2) {
+  grid-column: span 2; /* 第二张卡片跨2列（创新布局） */
+}
+.card:hover {
+  transform: translateY(-10px) rotate(1deg);
+  box-shadow: 0 12px 28px rgba(232, 62, 140, 0.2);
+  border-color: #ffccd5;
+}
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  transition: transform 0.5s ease;
+  /* 图片加载失败时的兜底样式 */
+  background: #f8f0f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e83e8c;
+  font-size: 14px;
+}
+.card:hover img {
+  transform: scale(1.05);
+}
+.card h3 {
+  color: #e83e8c;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+.card p {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+/* 卡片点击高亮效果 */
+.card.active-card {
+  border-color: #e83e8c;
+  box-shadow: 0 12px 28px rgba(232, 62, 140, 0.3);
+}
+
+/* 页脚：简约创新 */
+.footer {
+  text-align: center;
+  margin-top: 60px;
+  padding: 20px;
+  color: #e83e8c;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 4px 12px rgba(232, 62, 140, 0.1);
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .card:nth-child(2) {
+    grid-column: span 1; /* 手机端恢复单列 */
+  }
+  .header h1 {
+    font-size: 2.2rem;
+  }
+  .card img {
+    height: 150px;
+  }
+}

@@ -1,0 +1,122 @@
+// 等待DOM加载完成
+document.addEventListener('DOMContentLoaded', function() {
+  // 1. 导航栏高亮逻辑（根据滚动位置/点击）
+  const navLinks = document.querySelectorAll('.nav-link');
+  const cards = document.querySelectorAll('.card');
+  
+  // 点击导航链接高亮并平滑滚动
+  navLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      // 移除所有导航链接的active类
+      navLinks.forEach(link => link.classList.remove('active'));
+      // 给当前点击的链接添加active类
+      this.classList.add('active');
+      
+      // 平滑滚动到对应区域
+      const targetId = this.getAttribute('href');
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+
+  // 滚动时自动高亮对应导航
+  window.addEventListener('scroll', function() {
+    const scrollPosition = window.scrollY + 100; // 偏移量，避免触发过早
+    
+    cards.forEach(card => {
+      const cardTop = card.offsetTop;
+      const cardBottom = cardTop + card.offsetHeight;
+      const cardId = card.getAttribute('id');
+      
+      if (scrollPosition >= cardTop && scrollPosition < cardBottom) {
+        // 移除所有active类
+        navLinks.forEach(link => link.classList.remove('active'));
+        // 找到对应导航链接并高亮
+        const activeLink = document.querySelector(`.nav-link[href="#${cardId}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      }
+    });
+  });
+
+  // 2. 卡片点击交互效果
+  cards.forEach(card => {
+    card.addEventListener('click', function() {
+      // 移除所有卡片的active-card类
+      cards.forEach(c => c.classList.remove('active-card'));
+      // 给当前点击的卡片添加高亮类
+      this.classList.add('active-card');
+      
+      // 卡片点击动画（轻微缩放+震动）
+      this.animate([
+        { transform: 'scale(1.05) rotate(1deg)' },
+        { transform: 'scale(1.08) rotate(0deg)' },
+        { transform: 'scale(1.05) rotate(1deg)' }
+      ], {
+        duration: 500,
+        easing: 'ease-in-out'
+      });
+    });
+  });
+
+  // 3. 页面加载动画：卡片渐入
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  // 初始化卡片样式（隐藏）
+  cards.forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(20px)';
+    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(card);
+  });
+
+  // 4. 回到顶部功能（滚动到底部显示）
+  const backToTopBtn = document.createElement('button');
+  backToTopBtn.textContent = '↑';
+  backToTopBtn.style.position = 'fixed';
+  backToTopBtn.style.bottom = '30px';
+  backToTopBtn.style.right = '30px';
+  backToTopBtn.style.width = '50px';
+  backToTopBtn.style.height = '50px';
+  backToTopBtn.style.borderRadius = '50%';
+  backToTopBtn.style.border = 'none';
+  backToTopBtn.style.backgroundColor = '#e83e8c';
+  backToTopBtn.style.color = '#fff';
+  backToTopBtn.style.fontSize = '20px';
+  backToTopBtn.style.cursor = 'pointer';
+  backToTopBtn.style.boxShadow = '0 4px 12px rgba(232, 62, 140, 0.3)';
+  backToTopBtn.style.opacity = '0';
+  backToTopBtn.style.transition = 'opacity 0.3s ease';
+  backToTopBtn.style.zIndex = '999';
+  document.body.appendChild(backToTopBtn);
+
+  // 滚动显示/隐藏回到顶部按钮
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 500) {
+      backToTopBtn.style.opacity = '1';
+    } else {
+      backToTopBtn.style.opacity = '0';
+    }
+  });
+
+  // 点击回到顶部
+  backToTopBtn.addEventListener('click', function() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+});
